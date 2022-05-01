@@ -1,0 +1,6 @@
+{
+  "entryPoints": [
+    ""
+  ],
+  "out": "./type-docs"
+}
