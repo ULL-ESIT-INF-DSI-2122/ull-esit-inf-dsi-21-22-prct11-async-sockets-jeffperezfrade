@@ -24,9 +24,28 @@ const server = net.createServer((connection) => {
     switch (note.type) {
       case 'list': {
         response.type = 'list';
-        const notes: Note[] | boolean = noteDatabase.listNotes(note.user);
-        if (noteDatabase.listNotes(note.user) == false || notes.length == 0) {
+        if (noteDatabase.listNotes(note.user).length == 0) {
           response.success = false;
+        } else {
+          response.notes = noteDatabase.listNotes(note.user);
+        }
+        break;
+      }
+      case 'delete': {
+        response.type = 'delete';
+        if (!noteDatabase.deleteNote(note)) {
+          response.success = false;
+        }
+        break;
+      }
+      case 'print': {
+        response.type = 'print';
+        const noteRead = noteDatabase.printNote(note);
+        if (noteDatabase.printNote(note) == false) {
+          response.success = false;
+        } else if (typeof noteRead !== 'boolean') {
+          response.notes = [noteRead];
+        }
         }
       }
     }
