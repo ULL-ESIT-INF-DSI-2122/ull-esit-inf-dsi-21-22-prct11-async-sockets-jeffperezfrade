@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as chalk from 'chalk';
-import {Note} from '../Note/Note.class';
+import {Note} from './Note.class';
 
 export class NoteDatabase {
   constructor() {
@@ -46,10 +46,10 @@ export class NoteDatabase {
     }
   }
 
-  public listNotes(user: string): Note[] | boolean {
+  public listNotes(user: string): Note[] {
     if (!fs.existsSync(`database/${user}`)) {
       console.log(chalk.red(`Error: User ${user} not found!`));
-      return false;
+      return [];
     } else {
       const totalFiles: string[] = fs.readdirSync(`database/${user}`);
       const notes: Note[] = [];
