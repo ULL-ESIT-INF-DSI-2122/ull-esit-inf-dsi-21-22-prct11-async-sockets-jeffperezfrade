@@ -45,5 +45,21 @@ export class NoteDatabase {
       return true;
     }
   }
+
+  public listNotes(user: string): Note[] | boolean {
+    if (!fs.existsSync(`database/${user}`)) {
+      console.log(chalk.red(`Error: User ${user} not found!`));
+      return false;
+    } else {
+      const totalFiles: string[] = fs.readdirSync(`database/${user}`);
+      const notes: Note[] = [];
+      totalFiles.forEach((file) => {
+        const content: string = fs.readFileSync(`database/${user}/${file}`, {encoding: 'utf-8'});
+        const parsedJSON = JSON.parse(content);
+        notes.push(new Note(user, parsedJSON.title, parsedJSON.body, parsedJSON.color));
+      });
+      return notes;
+    }
+  }
 }
 
