@@ -61,5 +61,17 @@ export class NoteDatabase {
       return notes;
     }
   }
+
+  public printNote(note: Note): Note | boolean {
+    if (!fs.existsSync(`database/${note.user}/${note.title}.json`)) {
+      console.log(chalk.red(`Error: ${note.title} does not exist!`));
+      return false;
+    } else {
+      const content: string = fs.readFileSync(`database/${note.user}/${note.title}`, {encoding: 'utf-8'});
+      const parsedJSON = JSON.parse(content);
+      const newNote: Note = new Note(note.user, parsedJSON.title, parsedJSON.body, parsedJSON.color);
+      return newNote;
+    }
+  }
 }
 
