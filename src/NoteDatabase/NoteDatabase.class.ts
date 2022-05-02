@@ -13,6 +13,14 @@ export class NoteDatabase {
       return false;
     }
     const structureJSON: string = `{"title": "${note.title}", "body": "${note.body}", "color": "${note.color}"}`;
+    if (fs.existsSync(`database/${note.user}`)) {
+      fs.appendFileSync(`database/${note.user}/${note.title}.json`, structureJSON);
+    } else {
+      fs.mkdirSync(`database/${note.user}`, {recursive: true});
+      fs.appendFileSync(`database/${note.user}/${note.title}.json`, structureJSON);
+    }
+    console.log(chalk.green(`${note.title} note added to ${note.user} folder!`));
+    return true;
   }
 }
 
