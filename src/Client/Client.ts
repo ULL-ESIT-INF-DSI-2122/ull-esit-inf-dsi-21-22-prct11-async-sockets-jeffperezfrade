@@ -97,8 +97,8 @@ yargs.command({
   handler(argv) {
     if (typeof argv.body === 'string' && typeof argv.color === 'string' &&
           typeof argv.user === 'string' && typeof argv.title === 'string') {
-      if (argv.color != 'blue' && argv.color != 'red' && argv.color != 'yellow' && argv.color != 'green') {
-        console.log(chalk.bold.red('Note color must be red, green, blue, or yellow.'));
+      if (argv.color != 'red' && argv.color != 'green' && argv.color != 'blue' && argv.color != 'yellow') {
+        console.log(chalk.bold.red(`Error: Colors supported => red, green, blue, or yellow.`));
       } else {
         request = {
           type: 'modify',
@@ -195,33 +195,33 @@ client.write(JSON.stringify(request) + `\n`, (error) => {
   }
 });
 
-socket.on('message', (jsonRequest) => {
-  switch (jsonRequest.type) {
+socket.on('message', (JSONResquest) => {
+  switch (JSONResquest.type) {
     case 'add':
-      if (jsonRequest.success) {
+      if (JSONResquest.success) {
         console.log( chalk.bold.green('New note added!'));
       } else {
         console.log(chalk.bold.red('Note title taken! '));
       }
       break;
     case 'modify':
-      if ( jsonRequest.success) {
+      if ( JSONResquest.success) {
         console.log(chalk.bold.green( 'Note modified!'));
       } else {
         console.log( chalk.bold.red('The note you want to modify does not exist!'));
       }
       break;
     case 'delete':
-      if (jsonRequest.success ) {
+      if (JSONResquest.success ) {
         console.log(chalk.bold.green('Note deleted!') );
       } else {
         console.log( chalk.bold.red('Note not found'));
       }
       break;
     case 'list':
-      if (jsonRequest.success) {
+      if (JSONResquest.success) {
         console.log('Your notes are:' );
-        jsonRequest.notes.forEach((note: any) => {
+        JSONResquest.notes.forEach((note: any) => {
           console.log( chalk.bold.keyword(note.color)(note.title));
         });
       } else {
@@ -229,9 +229,8 @@ socket.on('message', (jsonRequest) => {
       }
       break;
     case 'print':
-      if (jsonRequest.success) {
-        console.log( chalk.bold.keyword(jsonRequest.notes[0].color)(jsonRequest.notes[0].title +
-                                                      '\n' + jsonRequest.notes[0].body));
+      if (JSONResquest.success) {
+        console.log( chalk.bold.keyword(JSONResquest.notes[0].color)(JSONResquest.notes[0].title + '\n' + JSONResquest.notes[0].body));
       } else {
         console.log( chalk.bold.red('Note not found!') );
       }

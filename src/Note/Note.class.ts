@@ -1,7 +1,7 @@
 /**
  * Different note colors.
  */
-export type Colors = 'yellow' | 'blue' | 'red' | 'blue' | 'green';
+export type Colors = 'yellow' | 'blue' | 'red' | 'green';
 /**
  * This class stands for the notes sended.
  */
