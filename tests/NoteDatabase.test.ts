@@ -8,6 +8,7 @@ describe('NotesDatabase class tests', () => {
   const notesDatabase = new NotesDatabase();
   const note1: Note = new Note('Jeff', 'Nota 1', 'Hola esta es mi primera nota', 'blue');
   const note2: Note = new Note('Jonh', 'Nota 2', 'Hola soy Jonh', 'red');
+  const note3: Note = new Note('Jonh', 'Nota 3', 'Hola esta es mi tercera nota', 'yellow');
 
   it('The object should be created', () => {
     expect(notesDatabase).not.to.be.equal(null);
@@ -16,6 +17,7 @@ describe('NotesDatabase class tests', () => {
   it('notesDatabase.addNote() should return true', () => {
     expect(notesDatabase.addNote(note1)).to.be.equal(true);
     expect(notesDatabase.addNote(note2)).to.be.equal(true);
+    expect(notesDatabase.addNote(note3)).to.be.equal(true);
   });
 
   it('Database folder was created correctly', () => {
