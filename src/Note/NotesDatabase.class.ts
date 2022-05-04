@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as chalk from 'chalk';
 import {Note} from './Note.class';
 
-export class NoteDatabase {
+export class NotesDatabase {
   constructor() {
     // Empty constructor comment due to Code Smells.
   }
@@ -67,7 +67,7 @@ export class NoteDatabase {
       console.log(chalk.red(`Error: ${note.title} does not exist!`));
       return false;
     } else {
-      const content: string = fs.readFileSync(`database/${note.user}/${note.title}`, {encoding: 'utf-8'});
+      const content: string = fs.readFileSync(`database/${note.user}/${note.title}.json`, {encoding: 'utf-8'});
       const parsedJSON = JSON.parse(content);
       const newNote: Note = new Note(note.user, parsedJSON.title, parsedJSON.body, parsedJSON.color);
       return newNote;

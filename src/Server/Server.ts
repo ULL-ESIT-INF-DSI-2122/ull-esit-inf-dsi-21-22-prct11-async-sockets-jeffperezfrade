@@ -1,7 +1,7 @@
 import * as net from 'net';
 import * as chalk from 'chalk';
 import {Note} from '../Note/Note.class';
-import {NoteDatabase} from '../Note/NoteDatabase.class';
+import {NotesDatabase} from '../Note/NotesDatabase.class';
 import {EventEmitterServer} from './EventEmitterServer.class';
 
 export type ResponseType = {
@@ -24,7 +24,7 @@ const server = net.createServer((connection) => {
    * When the request event is received, the message sent by the client is processed.
    */
   socket.on('request', (note) => {
-    const database = new NoteDatabase();
+    const database = new NotesDatabase();
     const response: ResponseType = {
       type: 'add',
       success: true,
