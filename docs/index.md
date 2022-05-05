@@ -156,3 +156,5 @@ En esta carpeta abrimos el `index.html` con la extensión de VSCode llamada `Liv
 [Paquete Yargs](https://www.npmjs.com/package/yargs).
 
 [Paquete Chalk](https://www.npmjs.com/package/chalk).
+
+Jeff Pérez Frade [Perfil GitHub](https://github.com/jeffperezfrade).
