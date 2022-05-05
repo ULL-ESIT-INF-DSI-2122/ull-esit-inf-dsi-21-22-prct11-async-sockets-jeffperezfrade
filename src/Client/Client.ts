@@ -3,7 +3,10 @@ import * as chalk from 'chalk';
 import * as net from 'net';
 import {EventEmitterClient} from './EventEmitterClient.class';
 import {Colors} from '../Note/Note.class';
-
+/**
+ * Types given by the professor.
+ * User field added.
+ */
 export type RequestType = {
   type: 'add' | 'modify' | 'delete' | 'print' | 'list';
   user: string;
@@ -11,16 +14,25 @@ export type RequestType = {
   body?: string;
   color?: Colors;
 }
-
-const client = net.connect({port: 60300});
-
-const socket = new EventEmitterClient(client);
-
+/**
+ * Type by default.
+ */
 let request: RequestType = {
   type: 'add',
   user: '',
 };
+/**
+ * Client connected to 60300 port.
+ */
+const client = net.connect({port: 60300});
+/**
+ * Object of EventEmitterClient class.
+ */
+const socket = new EventEmitterClient(client);
 
+/**
+ * Command line for add a note.
+ */
 yargs.command({
   command: 'add',
   describe: 'Add a new note',
@@ -62,7 +74,9 @@ yargs.command({
     }
   },
 });
-
+/**
+ * Command line for modify a note.
+ */
 yargs.command({
   command: 'modify',
   describe: 'Modify a note',
@@ -109,7 +123,9 @@ yargs.command({
     }
   },
 });
-
+/**
+ * Command line for delete a note.
+ */
 yargs.command({
   command: 'delete',
   describe: 'Delete a note',
@@ -135,7 +151,9 @@ yargs.command({
     }
   },
 });
-
+/**
+ * Command line for list an user notes.
+ */
 yargs.command({
   command: 'list',
   describe: 'List the titles of the notes',
@@ -155,7 +173,9 @@ yargs.command({
     }
   },
 });
-
+/**
+ * Command line for print a note.
+ */
 yargs.command({
   command: 'print',
   describe: 'Print a specific note from the list',
@@ -186,13 +206,17 @@ yargs.command({
  * Process the arguments passed from the command line to the application.
  */
 yargs.parse();
-
+/**
+ * We send the message to the server.
+ */
 client.write(JSON.stringify(request) + `\n`, (error) => {
   if (error) {
     console.log(chalk.red(`Error: The note cannot be sent!`));
   }
 });
-
+/**
+ * We process the response.
+ */
 socket.on('message', (JSONRequest) => {
   switch (JSONRequest.type) {
     case 'add':
@@ -203,8 +227,8 @@ socket.on('message', (JSONRequest) => {
       }
       break;
     case 'modify':
-      if ( JSONRequest.success) {
-        console.log(chalk.green( 'Note modified!'));
+      if (JSONRequest.success) {
+        console.log(chalk.green('Note modified!'));
       } else {
         console.log(chalk.red('The note you want to modify does not exist!'));
       }
@@ -218,7 +242,7 @@ socket.on('message', (JSONRequest) => {
       break;
     case 'list':
       if (JSONRequest.success) {
-        console.log('Your notes are:' );
+        console.log('Your notes are: ');
         JSONRequest.notes.forEach((note: any) => {
           console.log(chalk.keyword(note.color)(note.title));
         });
@@ -238,7 +262,9 @@ socket.on('message', (JSONRequest) => {
       break;
   }
 });
-
+/**
+ * Check if there is any connection error.
+ */
 client.on( 'error', (err) => {
   console.log(`Error: Connection failed!: ${err.message}` );
 });
