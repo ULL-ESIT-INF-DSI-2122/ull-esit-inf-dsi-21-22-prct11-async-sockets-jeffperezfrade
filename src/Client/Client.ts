@@ -47,10 +47,8 @@ yargs.command({
     },
   },
   handler(argv) {
-    if (typeof argv.body === 'string' && typeof argv.title === 'string' &&
-        typeof argv.user === 'string' && typeof argv.color === 'string') {
-      if (argv.color == 'red' || argv.color == 'green' ||
-          argv.color == 'blue' || argv.color == 'yellow') {
+    if (typeof argv.body === 'string' && typeof argv.title === 'string' && typeof argv.user === 'string' && typeof argv.color === 'string') {
+      if (argv.color == 'red' || argv.color == 'green' || argv.color == 'blue' || argv.color == 'yellow') {
         request = {
           type: 'add',
           user: argv.user,
@@ -59,7 +57,7 @@ yargs.command({
           color: argv.color,
         };
       } else {
-        console.log(chalk.red('Note color must be red, green, yellow, or blue'));
+        console.log(chalk.red(`Error: Colors supported => red, green, blue, or yellow.`));
       }
     }
   },
@@ -98,7 +96,7 @@ yargs.command({
     if (typeof argv.body === 'string' && typeof argv.color === 'string' &&
           typeof argv.user === 'string' && typeof argv.title === 'string') {
       if (argv.color != 'red' && argv.color != 'green' && argv.color != 'blue' && argv.color != 'yellow') {
-        console.log(chalk.bold.red(`Error: Colors supported => red, green, blue, or yellow.`));
+        console.log(chalk.red(`Error: Colors supported => red, green, blue, or yellow.`));
       } else {
         request = {
           type: 'modify',
@@ -195,48 +193,48 @@ client.write(JSON.stringify(request) + `\n`, (error) => {
   }
 });
 
-socket.on('message', (JSONResquest) => {
-  switch (JSONResquest.type) {
+socket.on('message', (JSONRequest) => {
+  switch (JSONRequest.type) {
     case 'add':
-      if (JSONResquest.success) {
-        console.log( chalk.bold.green('New note added!'));
+      if (JSONRequest.success) {
+        console.log(chalk.green('New note added!'));
       } else {
-        console.log(chalk.bold.red('Note title taken! '));
+        console.log(chalk.red('Note title taken! '));
       }
       break;
     case 'modify':
-      if ( JSONResquest.success) {
-        console.log(chalk.bold.green( 'Note modified!'));
+      if ( JSONRequest.success) {
+        console.log(chalk.green( 'Note modified!'));
       } else {
-        console.log( chalk.bold.red('The note you want to modify does not exist!'));
+        console.log(chalk.red('The note you want to modify does not exist!'));
       }
       break;
     case 'delete':
-      if (JSONResquest.success ) {
-        console.log(chalk.bold.green('Note deleted!') );
+      if (JSONRequest.success ) {
+        console.log(chalk.green('Note deleted!') );
       } else {
-        console.log( chalk.bold.red('Note not found'));
+        console.log(chalk.red('Note not found'));
       }
       break;
     case 'list':
-      if (JSONResquest.success) {
+      if (JSONRequest.success) {
         console.log('Your notes are:' );
-        JSONResquest.notes.forEach((note: any) => {
-          console.log( chalk.bold.keyword(note.color)(note.title));
+        JSONRequest.notes.forEach((note: any) => {
+          console.log(chalk.keyword(note.color)(note.title));
         });
       } else {
-        console.log(chalk.bold.red('You have never saved a note!') );
+        console.log(chalk.red('You have never saved a note!') );
       }
       break;
     case 'print':
-      if (JSONResquest.success) {
-        console.log( chalk.bold.keyword(JSONResquest.notes[0].color)(JSONResquest.notes[0].title + '\n' + JSONResquest.notes[0].body));
+      if (JSONRequest.success) {
+        console.log(chalk.keyword(JSONRequest.notes[0].color)(JSONRequest.notes[0].title + '\n' + JSONRequest.notes[0].body));
       } else {
-        console.log( chalk.bold.red('Note not found!') );
+        console.log(chalk.red('Note not found!') );
       }
       break;
     default:
-      console.log(chalk.bold.red('Error: Command not supported!'));
+      console.log(chalk.red('Error: Command not supported!'));
       break;
   }
 });
