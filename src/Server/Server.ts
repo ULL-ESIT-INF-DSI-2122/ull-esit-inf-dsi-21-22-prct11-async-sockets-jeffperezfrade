@@ -3,18 +3,20 @@ import * as chalk from 'chalk';
 import {Note} from '../Note/Note.class';
 import {NotesDatabase} from '../Note/NotesDatabase.class';
 import {EventEmitterServer} from './EventEmitterServer.class';
-
+/**
+ * Types given by the professor.
+ */
 export type ResponseType = {
   type: 'add' | 'modify' | 'delete' | 'print' | 'list';
   success: boolean;
   notes?: Note[];
 }
 /**
- * A server is created with the net module of Node.js.
+ * Creating net module.
  */
 const server = net.createServer((connection) => {
   /**
-   * An object of class MessageEventEmitterServer is created.
+   * Object from EventEmitterServer class.
    */
   const socket = new EventEmitterServer(connection);
 
@@ -59,11 +61,11 @@ const server = net.createServer((connection) => {
         break;
       case 'print':
         response.type = 'print';
-        const noteContent = database.printNote(note);
-        if (noteContent == false) {
+        const cont = database.printNote(note);
+        if (cont == false) {
           response.success = false;
-        } else if (typeof noteContent !== 'boolean') {
-          response.notes = [noteContent];
+        } else if (typeof cont !== 'boolean') {
+          response.notes = [cont];
         }
         break;
       default:
@@ -72,7 +74,7 @@ const server = net.createServer((connection) => {
     }
 
     /**
-     * The response is sent to the client.
+     * We send the response to the client.
      */
     connection.write(JSON.stringify(response), (error) => {
       if (error) {
@@ -85,7 +87,7 @@ const server = net.createServer((connection) => {
   });
 
   /**
-   * If there is an error in the connection it is handled properly.
+   * Error handle.
    */
   connection.on('error', (err) => {
     if (err) {
@@ -94,8 +96,7 @@ const server = net.createServer((connection) => {
   });
 
   /**
-   * When a client disconnects a message informing about this is displayed
-   * on the server.
+   * Inform when a client disconnect.
    */
   connection.on('close', () => {
     console.log(chalk.green(`Client disconnected.`));
@@ -103,7 +104,7 @@ const server = net.createServer((connection) => {
 });
 
 /**
- * The server is listening on port 60300.
+ * Server is listening on port 60300.
  */
 server.listen(60300, () => {
   console.log(chalk.green(`Waiting clients...\n`));
