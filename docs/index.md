@@ -127,6 +127,10 @@ Ejecutamos el comando `npm run coverage` para obtener la tabla con los resultado
 
 ![Coverage](./img/coverage.PNG)
 
+Aunque esta vez ya este proceso se encuentra automatizado mediante una `GitHub Action` donde cada vez que se realiza un push al repositorio se envía el análisis a la página de `Coveralls`.
+
+![Coveralls](./img/coveralls.PNG)
+
 ## 6. Documentación..
 ---
 Esta práctica también cuenta con la documentación del código generada por TypeDoc, para generarla es necesario añadir todos los ficheros a la configuración de `typedoc.json`.
@@ -137,7 +141,7 @@ A continuación ejecutamos el comando npm `run doc` y se nos generaran todos los
 
 En esta carpeta abrimos el `index.html` con la extensión de VSCode llamada `Live Server` para poder ver el contenido de la página.
 
-**FOTO WEB**
+![TypedocWEB](./img/typedocWEB.PNG)
 
 ## 7. Conclusión.
 ---
