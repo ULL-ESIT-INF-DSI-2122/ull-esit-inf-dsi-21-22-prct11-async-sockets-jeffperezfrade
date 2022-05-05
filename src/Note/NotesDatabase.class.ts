@@ -2,13 +2,17 @@ import * as fs from 'fs';
 import * as chalk from 'chalk';
 import {Note} from './Note.class';
 /**
- * 
+ * Class to control de Notes Database.
  */
 export class NotesDatabase {
   constructor() {
     // Empty constructor comment due to Code Smells.
   }
-
+  /**
+   * Method to add a Note to the database.
+   * @param note Note to add.
+   * @returns Returns a boolean of success.
+   */
   public addNote(note: Note): boolean {
     if (fs.existsSync(`database/${note.user}/${note.title}.json`)) {
       console.log(chalk.red(`The note already exists!`));
@@ -24,7 +28,11 @@ export class NotesDatabase {
     console.log(chalk.green(`${note.title} note added to ${note.user} folder!`));
     return true;
   }
-
+  /**
+   * Method that modify a note from the database.
+   * @param note Note to modify.
+   * @returns Returns a boolean of success.
+   */
   public modifyNote(note: Note): boolean {
     if (!fs.existsSync(`database/${note.user}/${note.title}.json`)) {
       console.log(chalk.red(`Error: ${note.title} does not exist!`));
@@ -36,7 +44,11 @@ export class NotesDatabase {
       return true;
     }
   }
-
+  /**
+   * Method that delete a note from the database.
+   * @param note Note to delete.
+   * @returns Returns a boolean of success.
+   */
   public deleteNote(note: Note): boolean {
     if (!fs.existsSync(`database/${note.user}/${note.title}.json`)) {
       console.log(chalk.red(`Error: ${note.title} does not exist!`));
@@ -47,7 +59,11 @@ export class NotesDatabase {
       return true;
     }
   }
-
+  /**
+   * Method that list all the notes of an user.
+   * @param user User which all notes will be listed.
+   * @returns Array of notes that belongs to the user.
+   */
   public listNotes(user: string): Note[] {
     if (!fs.existsSync(`database/${user}`)) {
       console.log(chalk.red(`Error: User ${user} not found!`));
@@ -63,7 +79,11 @@ export class NotesDatabase {
       return notes;
     }
   }
-
+  /**
+   * Method that print a note.
+   * @param note Note to be printed.
+   * @returns Returns the note to be printed or a success boolean.
+   */
   public printNote(note: Note): Note | boolean {
     if (!fs.existsSync(`database/${note.user}/${note.title}.json`)) {
       console.log(chalk.red(`Error: ${note.title} does not exist!`));
