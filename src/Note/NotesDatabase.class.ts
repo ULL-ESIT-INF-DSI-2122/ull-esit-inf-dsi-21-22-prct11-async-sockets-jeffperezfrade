@@ -1,7 +1,9 @@
 import * as fs from 'fs';
 import * as chalk from 'chalk';
 import {Note} from './Note.class';
-
+/**
+ * 
+ */
 export class NotesDatabase {
   constructor() {
     // Empty constructor comment due to Code Smells.

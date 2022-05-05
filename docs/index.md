@@ -125,13 +125,13 @@ En esta práctica se han añadido un informe de cubrimiento de código. Así pod
 
 Ejecutamos el comando `npm run coverage` para obtener la tabla con los resultados por consola.
 
-**FOTO TABLA**
+![Coverage](./img/coverage.PNG)
 
 ## 6. Documentación..
 ---
 Esta práctica también cuenta con la documentación del código generada por TypeDoc, para generarla es necesario añadir todos los ficheros a la configuración de `typedoc.json`.
 
-**FOTO CONFIG**
+![Typedoc](./img/typedocJSON.PNG)
 
 A continuación ejecutamos el comando npm `run doc` y se nos generaran todos los archivos en la carpeta de salida que hemos escrito.
 
@@ -141,11 +141,15 @@ En esta carpeta abrimos el `index.html` con la extensión de VSCode llamada `Liv
 
 ## 7. Conclusión.
 ---
+Ha sido posible entender el funcionamiento de módulos de **Node.js** como puede ser `net` o `Events` con su clase `EventEmitter`. Con estos módulos se pueden realizar las comunicaciones entre cliente-servidor mediante los **sockets**.
 
+Personalmente esta práctica ha sido una de las mas complicadas, ya que me ha llevado mucho tiempo buscar información sobre algunos aspectos del código y de como poder realizarlo de acuerdo con las especificaciones requeridas por el profe. Si que no es la primera práctica de sockets que hago en la carrera pero cada vez mas se me está haciendo menos complicado a medida que voy entendiendo mas.
+
+Aprender sobre estas herramientas es algo fundamental para el futuro profesional, ya que seguramente tocaremos algo de estos temas. En las aplicaciones del mundo real se usan mayoritariamente estos mecanismos de comunicación cliente-servidor.
 
 ## 8. Bibliografía.
 ---
-[Guión de la Práctica 11](https://ull-esit-inf-dsi-2122.github.io/prct11-async-sockets/).
+[Guion de la Práctica 11](https://ull-esit-inf-dsi-2122.github.io/prct11-async-sockets/).
 
 [Documentación de la asignatura](https://ull-esit-inf-dsi-2122.github.io/nodejs-theory/).
 

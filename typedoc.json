@@ -1,6 +1,11 @@
 {
   "entryPoints": [
-    ""
+    "./src/Client/Client.ts",
+    "./src/Client/EventEmitterClient.class.ts",
+    "./src/Note/Note.class.ts",
+    "./src/Note/NotesDatabase.class.ts",
+    "./src/Server/Server.ts",
+    "./src/Server/EventEmitterServer.class.ts"
   ],
   "out": "./type-docs"
 }
