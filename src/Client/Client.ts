@@ -5,7 +5,7 @@ import {EventEmitterClient} from './EventEmitterClient.class';
 import {Colors} from '../Note/Note.class';
 /**
  * Types given by the professor.
- * User field added.
+ * 'User' field added.
  */
 export type RequestType = {
   type: 'add' | 'modify' | 'delete' | 'print' | 'list';
@@ -201,7 +201,6 @@ yargs.command({
     }
   },
 });
-
 /**
  * Process the arguments passed from the command line to the application.
  */
