@@ -11,4 +11,6 @@ Debemos tener dos terminales abiertas en la misma ruta:
 
 Para ver la **GitHub Page** haga click [aquí](https://ull-esit-inf-dsi-2122.github.io/ull-esit-inf-dsi-21-22-prct11-async-sockets-jeffperezfrade/).
 
+[![Coverage Status](https://coveralls.io/repos/github/ULL-ESIT-INF-DSI-2122/ull-esit-inf-dsi-21-22-prct11-async-sockets-jeffperezfrade/badge.svg?branch=main)](https://coveralls.io/github/ULL-ESIT-INF-DSI-2122/ull-esit-inf-dsi-21-22-prct11-async-sockets-jeffperezfrade?branch=main)
+
 **No es posible mostrar los badges ya que se ha excedido el tiempo de las Github Actions.**
