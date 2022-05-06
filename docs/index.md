@@ -495,6 +495,11 @@ client.on( 'error', (err) => {
 
 **Explicación de Cliente:**
 
+Aquí se gestionan los comandos que el usuario introducirá a la aplicación. Empezamos usando la función `connect` del módulo `net` de Node.js, esta recibe un objeto con toda la información de la conexión a la misma vez que retorna un **Socket**. Luego se crea un objeto de la clase `EventEmitterClient` llamado `socket` el cual nos va a permitir procesar la respuesta del servidor. Posteriormente se crea una variable del tipo `RequestType` proporcionada por el profesor donde incluyen los elementos que la petición debe tener. Esto se realiza con ayuda del paquete `yargs` para recoger los comandos que el usuario introduzca por consola, según que comando se introduzca se establecen los valores correspondientes dentro de `request`.
+
+Después de que se procesen los comandos con `yargs.parse()` y se escriben en el `socket` del cliente con el método `write`. Véase que se utiliza la función `stringify` para deserializar el objeto JSON.
+
+Cada vez que se recibe un mensaje completo del servidor, se ejecuta un manejador de la clase `EventEmitterClient` del tipo `message`. La respuesta del servidor se obtiene en `JSONRequest`, por lo que podemos acceder a la propiedad `type` de este objeto y mostrar un mensaje por consola dependiendo de la propiedad `success`. En caso de que se produzca un error se maneja con el evento `error` al final del archivo. 
 
 
 **Clase EventEmitterClient:**
