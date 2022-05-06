@@ -505,10 +505,36 @@ Cada vez que se recibe un mensaje completo del servidor, se ejecuta un manejador
 **Clase EventEmitterClient:**
 
 ```ts
+import {EventEmitter} from 'events';
+/**
+ * This class emit a message event.
+ */
+export class EventEmitterClient extends EventEmitter {
+  /**
+   * This constructor receives parts of one message with a data event, finally it emits a message event
+   * to indicate that the complete message is received.
+   * @param connection object of EventEmitter used as a socket.
+   */
+  constructor(connection: EventEmitter) {
+    super();
 
+    let response: string = '';
+    connection.on('data', (resChunk) => {
+      response += resChunk;
+    });
+
+    connection.on('end', () => {
+      this.emit('message', JSON.parse(response));
+    });
+  }
+}
 ```
 
 **Explicación de EventEmitterClient:**
+
+Esta clase hereda de `EventEmitter` ya que será utilizada por el cliente para la comunicación con el servidor. Cada vez que recibe un mensaje enviado por el servidor a través del socket, este emite un evento `message` cuando recibe un **mensaje completo**.
+
+* `constructor` tiene el parámetro `EventEmitter` llamado `connection`. El manejador se ejecuta con cada emisión de `data` y se almacena en `response` como un mensaje completo recibido en partes desde el servidor. Si se recibe un evento `end` entonces el servidor no ha terminado de enviar la respuesta, entonces se emite de nuevo un evento de tipo `message` junto con el mensaje completo para comunicar que ya se tiene la respuesta completa. Se utiliza la función `JSON.parse` para que `response` sea un objeto **JSON** correcto.
 
 **Server:**
 
