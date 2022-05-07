@@ -539,10 +539,130 @@ Esta clase hereda de `EventEmitter` ya que será utilizada por el cliente para l
 **Server:**
 
 ```ts
+import * as net from 'net';
+import * as chalk from 'chalk';
+import {Note} from '../Note/Note.class';
+import {NotesDatabase} from '../Note/NotesDatabase.class';
+import {EventEmitterServer} from './EventEmitterServer.class';
+/**
+ * Types given by the professor.
+ */
+export type ResponseType = {
+  type: 'add' | 'modify' | 'delete' | 'print' | 'list';
+  success: boolean;
+  notes?: Note[];
+}
+/**
+ * Creating net module.
+ */
+const server = net.createServer((connection) => {
+  /**
+   * Object from EventEmitterServer class.
+   */
+  const socket = new EventEmitterServer(connection);
 
+  console.log(chalk.green(`Client connected!`));
+
+  /**
+   * When the request event is received, the message sent by the client is processed.
+   */
+  socket.on('request', (note) => {
+    const database = new NotesDatabase();
+    const response: ResponseType = {
+      type: 'add',
+      success: true,
+    };
+    switch (note.type) {
+      case 'add':
+        // const newNote = new Note(note.user, note.title, note.body, note.color);
+        if (!database.addNote(note)) {
+          response.success = false;
+        }
+        break;
+      case 'modify':
+        response.type = 'modify';
+        if (!database.modifyNote(note)) {
+          response.success = false;
+        }
+        break;
+      case 'delete':
+        response.type = 'delete';
+        if (!database.deleteNote(note)) {
+          response.success = false;
+        }
+        break;
+      case 'list':
+        response.type = 'list';
+        const listNotes: Note[] = database.listNotes(note.user);
+        if (listNotes.length == 0) {
+          response.success = false;
+        } else {
+          response.notes = listNotes;
+        }
+        break;
+      case 'print':
+        response.type = 'print';
+        const cont = database.printNote(note);
+        if (cont == false) {
+          response.success = false;
+        } else if (typeof cont !== 'boolean') {
+          response.notes = [cont];
+        }
+        break;
+      default:
+        console.log(chalk.red(`Error: Command not supported!`));
+        break;
+    }
+
+    /**
+     * We send the response to the client.
+     */
+    connection.write(JSON.stringify(response), (error) => {
+      if (error) {
+        console.log(chalk.red(`Error: Response not sent!`));
+      } else {
+        console.log(chalk.green(`Response sent!`));
+        connection.end();
+      }
+    });
+  });
+
+  /**
+   * Error handle.
+   */
+  connection.on('error', (err) => {
+    if (err) {
+      console.log(`Connection failed! - ${err.message}`);
+    }
+  });
+
+  /**
+   * Inform when a client disconnect.
+   */
+  connection.on('close', () => {
+    console.log(chalk.green(`Client disconnected.`));
+  });
+});
+
+/**
+ * Server is listening on port 60300.
+ */
+server.listen(60300, () => {
+  console.log(chalk.green(`Waiting clients...\n`));
+});
 ```
 
 **Explicación de Server:**
+
+Primero nos encontramos con `ResponseType` proporcionada por el profesor donde incluyen los elementos que la respuesta debe tener. Luego se utiliza el método `createServer` del módulo `net` el cual recibe un manejador y devuelve un objeto de tipo `Server`. `Connection` es un `socket` que se encargará de la comunicación de  los clientes con el servidor. Este `socket` es un objeto de la clase `EventEmitterServer` y se utiliza para definir un manejador que se ejecuta cada vez que se recibe un evento `request` o una petición por parte del cliente. Seguidamente se crea un objeto `database` de la clase `NotesDatabase` que se encargará de gestionar el directorio con las notas de los usuarios. 
+
+`response` es una variable del tipo `ResponseType` que será la respuesta enviada por el cliente, esta por defecto tendrá el tipo `add` y tendrá el campo `success` a `true`. Acto seguido se hace un estudio del `note.type` para saber que se ha realizado por parte del cliente. En función de su valor y lo que devuelvan los métodos de la clase `NotesDatabase` se establecen correctamente las propiedades de `response`.
+
+Cuando llega el momento de enviarle una respuesta al cliente, se utiliza el método `write`. En caso de que se realice correctamente, se cierra el servidor mediante la función `connection.end()` por parte del cliente.
+
+Por último se maneja en caso de `error` en la conexión y así poder controlarlo fácilmente. Luego añadimos el evento `close` para cuando el cliente se desconecta.
+
+La función `listen` especifica por que puerto estará escuchando el servidor, en este caso será el puerto **60300** donde los clientes tendrán que conectarse.
 
 **Clase EventEmitterServer:**
 
