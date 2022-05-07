@@ -700,6 +700,40 @@ export class EventEmitterServer extends EventEmitter {
 
 Esta clase hereda de `EventEmitter` y será utilizada por el servidor para comunicarse adecuadamente con el cliente cada vez que emite un tipo `request`. Este evento lo emite cada vez que este recibe una petición completa a través del socket. El parámetro `connection` del `constructor` es un objeto de la clase `EventEmitter`. Dentro tenemos un manejador que con cada evento `data` se ejecuta y almacenamos el resultado en la variable `msg` como un mensaje completo. Sabemos que cada mensaje que envía el cliente termina con `\n` entonces lo buscamos dentro de `msg`. Cuando se deje de encontrar ese caracter entonces sabremos que tenemos el mensaje completo, por lo que emitimos un evento `request` con un objeto JSON el cual incluye el mensaje completo.
 
+## Ejemplo de uso:
+**1 Terminal: Ejecutamos `node dist/Server/Server.js`**
+```bash
+$ node dist/Server/Server.js
+Waiting clients...
+
+Client connected!
+My First Note note added to Jeff folder!
+Response sent!
+Client disconnected.
+Client connected!
+My First Note modified!
+Response sent!
+Client disconnected.
+Client connected!
+My First Note note deleted!
+Response sent!
+Client disconnected.
+```
+
+**2 Terminal: Ejecutamos `node dist/Client/Client.js` junto con los comandos que queremos realizar:**
+
+```bash
+$ node dist/Client/Client.js add --user="Jeff" --title="My First Note" --body="Hello my name 
+is Jeff" --color="blue"
+New note added!
+$ node dist/Client/Client.js modify --user="Jeff" --title="My First Note" --body="Hello this 
+is a modified note" --color="blue"
+Note modified!
+$ node dist/Client/Client.js delete --user="Jeff" --title="My First Note" --body="Hello this 
+is a modified note" --color="blue"
+Note deleted!
+```
+
 ## 4. Pruebas TDD.
 ---
 
