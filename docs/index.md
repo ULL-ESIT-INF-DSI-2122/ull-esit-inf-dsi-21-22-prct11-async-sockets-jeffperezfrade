@@ -667,10 +667,38 @@ La función `listen` especifica por que puerto estará escuchando el servidor, e
 **Clase EventEmitterServer:**
 
 ```ts
-
+import {EventEmitter} from 'events';
+/**
+ * This class emits a request.
+ * It extends from EventEmitter.
+ */
+export class EventEmitterServer extends EventEmitter {
+  /**
+   * Constructor that receives a message in parts.
+   * If there is a end of line jump, we know there is a completed message.
+   * Then a request event is emitted.
+   * @param connect Used as a socket.
+   */
+  constructor(connect: EventEmitter) {
+    super();
+    let msg: string = '';
+    connect.on('data', (msgChunk) => {
+      msg += msgChunk;
+      let limit: number = msg.indexOf('\n');
+      while (limit !== -1) {
+        const auxMsg = msg.substring(0, limit);
+        msg = msg.substring(limit + 1);
+        this.emit('request', JSON.parse(auxMsg));
+        limit = msg.indexOf('\n');
+      }
+    });
+  }
+}
 ```
 
 **Explicación de EventEmitterServer:**
+
+Esta clase hereda de `EventEmitter` y será utilizada por el servidor para comunicarse adecuadamente con el cliente cada vez que emite un tipo `request`. Este evento lo emite cada vez que este recibe una petición completa a través del socket. El parámetro `connection` del `constructor` es un objeto de la clase `EventEmitter`. Dentro tenemos un manejador que con cada evento `data` se ejecuta y almacenamos el resultado en la variable `msg` como un mensaje completo. Sabemos que cada mensaje que envía el cliente termina con `\n` entonces lo buscamos dentro de `msg`. Cuando se deje de encontrar ese caracter entonces sabremos que tenemos el mensaje completo, por lo que emitimos un evento `request` con un objeto JSON el cual incluye el mensaje completo.
 
 ## 4. Pruebas TDD.
 ---
